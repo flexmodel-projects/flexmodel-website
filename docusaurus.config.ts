@@ -5,7 +5,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'Flexmodel',
   tagline: '开源、免费自主可控的后端低代码开发平台，支持私有化部署',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.svg',
 
   // Set the production url of your site here
   url: 'https://flexmode.wetech.tech',
