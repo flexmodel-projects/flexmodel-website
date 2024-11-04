@@ -4,7 +4,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'Flexmodel',
-  tagline: '开源、免费自主可控的后端低代码开发平台，支持私有化部署',
+  tagline: '面向下一代应用程序的统一数据访问层，开源、免费、支持私有化部署',
   favicon: 'img/favicon.svg',
 
   // Set the production url of your site here
@@ -78,9 +78,14 @@ const config: Config = {
           position: 'left',
           label: '使用手册',
         },*/
-        {to: '/docs/intro', label: '使用手册', position: 'left'},
-        {type: 'docSidebar', sidebarId: 'artifactsSidebar', label: '构件', position: 'left'},
-        {to: '/blog', label: 'Blog', position: 'left'},
+        {to: '/docs/intro', label: '在线文档', position: 'left'},
+       /* {to: '/artifacts',  label: '组件', position: 'left'},*/
+     /*   {to: '/blog', label: 'Blog', position: 'left'},*/
+        {
+          href: 'https://preview.flexmodel.wetech.tech',
+          label: '在线预览',
+          position: 'right',
+        },
         {
           href: 'https://github.com/flexmodel-projects',
           label: 'GitHub',

@@ -10,61 +10,58 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
-    description: (
-      <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
-      </>
-    ),
-  },
-  {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
-    description: (
-      <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
-      </>
-    ),
-  },
-  {
-    title: 'Powered by React',
+    title: '无代码生成通用接口',
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
-      <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
-      </>
+        <>
+          通过简化的操作方式，允许用户在无需编写代码的情况下，快速创建和管理应用程序接口，从而提升开发效率和降低技术门槛。
+        </>
+    ),
+  },
+  {
+    title: '跨源数据关联',
+    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    description: (
+        <>
+          借助 GraphQL 的数据图，可以轻松地将来自不同来源的数据进行关联，实现数据的多源查询与聚合。
+        </>
+    ),
+  },
+  {
+    title: '全面支持信创国产化',
+    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    description: (
+        <>
+          支持国产化环境和多数据库适配，除了主流数据库外，目前已支持达梦、GBase、人大金仓、东方通等多款国产信创平台的接入。
+        </>
     ),
   },
 ];
 
 function Feature({title, Svg, description}: FeatureItem) {
   return (
-    <div className={clsx('col col--4')}>
-      <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
+      <div className={clsx('col col--4')}>
+        <div className="text--center">
+          <Svg className={styles.featureSvg} role="img"/>
+        </div>
+        <div className="text--center padding-horiz--md">
+          <Heading as="h3">{title}</Heading>
+          <p>{description}</p>
+        </div>
       </div>
-      <div className="text--center padding-horiz--md">
-        <Heading as="h3">{title}</Heading>
-        <p>{description}</p>
-      </div>
-    </div>
   );
 }
 
 export default function HomepageFeatures(): JSX.Element {
   return (
-    <section className={styles.features}>
-      <div className="container">
-        <div className="row">
-          {FeatureList.map((props, idx) => (
-            <Feature key={idx} {...props} />
-          ))}
+      <section className={styles.features}>
+        <div className="container">
+          <div className="row">
+            {FeatureList.map((props, idx) => (
+                <Feature key={idx} {...props} />
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
   );
 }

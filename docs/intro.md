@@ -2,46 +2,23 @@
 sidebar_position: 1
 ---
 
-# Tutorial Intro
+# 介绍
 
-Let's discover **Docusaurus in less than 5 minutes**.
+## 简介
 
-## Getting Started
+Flexmodel 提供了构建 API 服务的能力，帮助用户创建自定义服务接口。前端开发人员可以利用这些配置好的接口来开发自己的页面，从而提高开发效率。
 
-Get started by **creating a new site**.
+### flexmodel 具备哪些功能？
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+1. API服务：支持通过GraphQL构建RestAPI服务
+2. 数据源管理：支持主流数据库和国产化数据库的接入
+3. 数据建模：支持数据模型管理，数据的管理
+4. 身份源：支持oidc、ldap、社交账号等身份源的接入以提供接口认证
 
-### What you'll need
+### flexmodel 能做什么？
 
-- [Node.js](https://nodejs.org/en/download/) version 18.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+* 统一数据服务，将一些通用的接口直接提供给前端，提高开发效率。
 
-## Generate a new site
+* BFF层或者API网关，将后端的接口转化为GraphQL请求或者RestAPI请求，返回给前端
 
-Generate a new Docusaurus site using the **classic template**.
-
-The classic template will automatically be added to your project after you run the command:
-
-```bash
-npm init docusaurus@latest my-website classic
-```
-
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
-
-The command also installs all necessary dependencies you need to run Docusaurus.
-
-## Start your site
-
-Run the development server:
-
-```bash
-cd my-website
-npm run start
-```
-
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
-
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
-
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+* 低代码数据引擎，将数据模型转换为数据服务给到前端低代码页面
