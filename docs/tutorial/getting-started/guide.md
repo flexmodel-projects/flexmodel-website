@@ -1,3 +1,6 @@
+---
+sidebar_position: 10
+---
 # 新手指引
 
 上手前，您需要学会GraphQL，并了解如何使用GraphQL。

@@ -23,7 +23,7 @@ const FeatureList: FeatureItem[] = [
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
         <>
-          借助 GraphQL 的数据图，可以轻松地将来自不同来源的数据进行关联，实现数据的多源查询与聚合。
+          借助 GraphQL 的数据图，可以轻松地将不同来源的数据进行关联，实现数据的多源查询与聚合。
         </>
     ),
   },

@@ -78,8 +78,8 @@ const config: Config = {
           position: 'left',
           label: '使用手册',
         },*/
-        {to: '/docs/intro', label: '在线文档', position: 'left'},
-       /* {to: '/artifacts',  label: '组件', position: 'left'},*/
+        {to: '/docs/tutorial/intro', sidebarId: 'tutorialSidebar', label: '文档', position: 'left'},
+        {to: '/docs/api', label: 'API', sidebarId: 'apiSidebar', position: 'left'},
      /*   {to: '/blog', label: 'Blog', position: 'left'},*/
         {
           href: 'https://preview.flexmodel.wetech.tech',

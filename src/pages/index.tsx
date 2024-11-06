@@ -19,8 +19,13 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/intro">
-            立即上手 🚀
+            to="/docs/tutorial/intro">
+            入门指南 🚀
+          </Link>
+          <Link
+              className="button button--secondary button--lg"
+              to="https://preview.flexmodel.wetech.tech/">
+            试用一下 🚀
           </Link>
         </div>
       </div>
