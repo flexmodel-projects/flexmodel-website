@@ -17,16 +17,13 @@ function HomepageHeader() {
         </Heading>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
-          <Link
+          <Link color="primary"
             className="button button--secondary button--lg"
-            to="/docs/tutorial/intro">
-            入门指南 🚀
-          </Link>
+                to="/docs/tutorial/intro">入门指南 🚀</Link>
+          &nbsp;&nbsp;&nbsp;&nbsp;
           <Link
-              className="button button--secondary button--lg"
-              to="https://preview.flexmodel.wetech.tech/">
-            试用一下 🚀
-          </Link>
+              className="button button--info button--lg"
+              to="https://preview.flexmodel.wetech.tech/">试用一下 ✨</Link>
         </div>
       </div>
     </header>
