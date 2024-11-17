@@ -11,7 +11,7 @@ type FeatureItem = {
 const FeatureList: FeatureItem[] = [
   {
     title: '无代码生成通用接口',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    Svg: require('@site/static/img/undraw_developer_activity_re_39tg.svg').default,
     description: (
         <>
           通过简化的操作方式，允许用户在无需编写代码的情况下，快速创建和管理应用程序接口，从而提升开发效率和降低技术门槛。
@@ -20,7 +20,7 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: '跨源数据关联',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    Svg: require('@site/static/img/undraw_add_information_j2wg.svg').default,
     description: (
         <>
           借助 GraphQL 的数据图，可以轻松地将不同来源的数据进行关联，实现数据的多源查询与聚合。
@@ -29,7 +29,7 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: '全面支持信创国产化',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    Svg: require('@site/static/img/undraw_best_place_re_lne9.svg').default,
     description: (
         <>
           支持国产化环境和多数据库适配，除了主流数据库外，目前已支持达梦、GBase、人大金仓、东方通等多款国产信创平台的接入。
