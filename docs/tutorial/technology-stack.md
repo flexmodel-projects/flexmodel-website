@@ -2,7 +2,7 @@
 
 ## 后端技术栈
 
-Java 21、Maven、Quarkus、Vert.x
+Java 21、Groovy、Maven、Quarkus、Vert.x
 
 ## 前端技术栈
 
