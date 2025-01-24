@@ -37,14 +37,6 @@ Flexmodel 通过GraphQL语法设计接口，支持一键生成增删改查接口
 
 ![](flexmodel_api.png)
 
-### Flexmodel 和 Hasura 有什么区别？
-
-Hasura是一款开源的GraphQL服务端，它通过代码生成机制将GraphQL语法转换为数据库的SQL语句，从而实现对数据的查询、修改和删除等操作，市面上大部分的GraphQL服务端也都是这种形式。
-
-Flexmodel则基于Java开发，采用动态运行机制，不经过编译过程，因此能够更好地满足各种动态场景的需求，例如低代码后端引擎中需要的动态类型绑定。这使得Flexmodel在某些特定应用场景中，能够提供比Hasura更好的适用性。
-
-同时，Flexmodel的底层ORM和GraphQL生成均为自主研发，未来计划支持更多国产数据库和中间件的适配。
-
 
 虽然Flexmodel目前尚处于初步发展阶段，许多功能仍在完善中，但我们期待广大的开发者朋友能够提出宝贵意见，与我们共同学习和交流，助力Flexmodel的成长。
 
