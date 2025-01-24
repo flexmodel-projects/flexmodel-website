@@ -157,5 +157,5 @@ sidebar_position: 20
 | _end_with     | 结束于     | id、string、json、text                                           |
 | _in           | 包含      | id、string、json、text、int、bigint、decimal、date、datetime          |
 | _nin          | 不包含     | id、string、json、text、int、bigint、decimal、date、datetime          |
-| between       | 范围      | date、datetime                                                 |
+| _between       | 范围      | date、datetime                                                 |
 
