@@ -151,11 +151,11 @@ sidebar_position: 20
 | _gte          | 大于等于    | int、bigint、decimal  、date、datetime                            |
 | _lt           | 小于      | int、bigint、decimal 、date、datetime                             |
 | _lte          | 小于等于    | int、bigint、decimal 、date、datetime                             |
-| _contains     | 字符串匹配   | string、json、text                                              |
-| _not_contains | 字符串匹配取反 | string、json、text                                              |
+| _contains     | 包含（模糊匹配）   | string、json、text                                              |
+| _not_contains | 不包含（模糊匹配） | string、json、text                                              |
 | _starts_with  | 开始于     | id、string、json、text                                           |
 | _end_with     | 结束于     | id、string、json、text                                           |
 | _in           | 包含      | id、string、json、text、int、bigint、decimal、date、datetime          |
 | _nin          | 不包含     | id、string、json、text、int、bigint、decimal、date、datetime          |
-| between       | 范围      | date、datetime                                                 |
+| _between       | 范围      | date、datetime                                                 |
 
