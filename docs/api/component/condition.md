@@ -141,21 +141,21 @@ sidebar_position: 20
 
 > 注意事项：只支持同类型的相互比较，relation暂不支持任何运算
 
-| 操作符           | 说明      | 类型支持                                                          |
-|---------------|---------|---------------------------------------------------------------|
-| _and          | 与       | n/a                                                           |
-| _or           | 或       | n/a                                                           |
-| _eq           | 等于      | id、string、json、text、int、bigint、decimal、date、datetime 、boolean |
-| _ne           | 不等于     | id、string、json、text、int、bigint、decimal、date、datetime 、boolean |
-| _gt           | 大于      | int、bigint、decimal、date、datetime                              |
-| _gte          | 大于等于    | int、bigint、decimal  、date、datetime                            |
-| _lt           | 小于      | int、bigint、decimal 、date、datetime                             |
-| _lte          | 小于等于    | int、bigint、decimal 、date、datetime                             |
-| _contains     | 包含（模糊匹配）   | string、json、text                                              |
+| 操作符           | 说明        | 类型支持                                                          |
+|---------------|-----------|---------------------------------------------------------------|
+| _and          | 与         | n/a                                                           |
+| _or           | 或         | n/a                                                           |
+| _eq           | 等于        | id、string、json、text、int、bigint、decimal、date、datetime 、boolean |
+| _ne           | 不等于       | id、string、json、text、int、bigint、decimal、date、datetime 、boolean |
+| _gt           | 大于        | int、bigint、decimal、date、datetime                              |
+| _gte          | 大于等于      | int、bigint、decimal  、date、datetime                            |
+| _lt           | 小于        | int、bigint、decimal 、date、datetime                             |
+| _lte          | 小于等于      | int、bigint、decimal 、date、datetime                             |
+| _contains     | 包含（模糊匹配）  | string、json、text                                              |
 | _not_contains | 不包含（模糊匹配） | string、json、text                                              |
-| _starts_with  | 开始于     | id、string、json、text                                           |
-| _end_with     | 结束于     | id、string、json、text                                           |
-| _in           | 包含      | id、string、json、text、int、bigint、decimal、date、datetime          |
-| _nin          | 不包含     | id、string、json、text、int、bigint、decimal、date、datetime          |
-| _between       | 范围      | date、datetime                                                 |
+| _starts_with  | 开始于       | id、string、json、text                                           |
+| _end_with     | 结束于       | id、string、json、text                                           |
+| _in           | 包含        | id、string、json、text、int、bigint、decimal、date、datetime          |
+| _nin          | 不包含       | id、string、json、text、int、bigint、decimal、date、datetime          |
+| _between      | 范围        | date、datetime                                                 |
 
