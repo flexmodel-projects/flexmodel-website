@@ -9,7 +9,7 @@ Flexmodel框架采用JSON格式定义模型，此文档为Schema定义描述。
 
 ## 对象配置
 
-对象分为三种，entity、enum和native_query，实体对应数据库物理表，enum为枚举类型，native_query为原生SQL查询。
+对象分为三种，entity、enum和native_query，实体对应数据库物理表，enum为枚举类型，native_query为本地查询。
 
 对象包含以下公共属性：
 
@@ -361,7 +361,7 @@ StudentDetail:
 
 </details>
 
-### 原生SQL查询描述
+### 本地查询描述
 
 用于支持建模没办法实现的复杂查询，比较灵活，缺点是跨数据库移植性较差。
 
