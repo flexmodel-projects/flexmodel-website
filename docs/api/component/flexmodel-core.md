@@ -171,26 +171,24 @@ List<Map<String, Object>> groupList = session.find(entityName, query -> query
       .setFrom(courseEntityName)
       .setLocalField("id") // 主键字段，存在关联关系时可不指定
       .setForeignField("teacher_id") // 外键字段，存在关联关系时可不指定
-      .setFilter(f -> f.notEqualTo("teacher_id", 999))
+      .withFilter(Expressions.field("teacher_id").ne(999))
     )
   )
   // 设置分组
   .setGroupBy(groupBy -> groupBy
     .addField("teacher_name")
   )
-  // 设置过滤条件
-  .setFilter(f -> f.equalTo("username", "john_doe")
-    .or()
-    .equalTo("remark", "aa")
-    .equalTo("locked", false)
-    .notEqualTo("email", "jane_doe@example.com")
-    .greaterThan("age", 18)
-    .and()
-    .greaterThanOrEqualTo("registrationDate", "2020-01-01")
-    .lessThan("age", 65)
-    .lessThanOrEqualTo("lastLogin", "2023-01-01")
-    .or(or -> or.notIn("role", List.of("banned")).in("status", List.of("active", "pending")))
-    .between("createdAt", "2022-01-01", "2022-12-31"))
+  .withFilter(
+      Expressions.field("username").eq("john_doe")
+      .or(Expressions.field("remark").eq("aa")
+          .and(Expressions.field("locked").eq(false).and(Expressions.field("email").ne("jane_doe@example.com"))
+              .and(Expressions.field("age").gt(18).and(Expressions.field("registrationDate").ge("2020-01-01")
+                  .and(Expressions.field("age").lt(65))))))
+          .and(Expressions.field("lastLogin").le("2023-01-01"))
+          .or(Expressions.field("role").notIn(List.of("banned")))
+      .or(Expressions.field("status").in(List.of("active", "pending")))
+      .and(Expressions.field("createdAt").between("2022-01-01", "2022-12-31"))
+  )
   // 设置排序
   .setSort(sort -> sort.addOrder("id", Direction.DESC))
   // 设置分页查询
@@ -229,7 +227,6 @@ List<Map<String, Object>> dayOfYearList = session.find(entityName, query -> quer
 按照一月中的天数进行分组
 
 ```java
-Assertions.assertFalse(dayOfYearList.isEmpty());
 List<Map<String, Object>> dayOfMonthList = session.find(entityName, query -> query
   .setProjection(projection -> projection
     .addField("dayOfMonth", dayOfMonth(field("birthday")))
@@ -238,7 +235,6 @@ List<Map<String, Object>> dayOfMonthList = session.find(entityName, query -> que
     groupBy.addField("dayOfMonth")
   )
 );
-
 ```
 
 按照一周中的天数进行分组
@@ -425,7 +421,7 @@ session.createView("teacher_course_report", "teacher", query -> query
           .setFrom(teacherCourseEntityName)
         )
       )
-      .setFilter(f -> f.greaterThanOrEqualTo("id", 1))
+      .withFilter(Expressions.field("id").gte(1))
       .setGroupBy(groupBy -> groupBy
         .addField("id")
         .addField("teacher_name")
@@ -441,7 +437,7 @@ session.createView("teacher_course_report", "teacher", query -> query
 
 ```java
 List<Map<String, Object>> list = session.find("teacher_course_report", query -> query
-  .setFilter(f -> f.equalTo("teacher_id", 2))
+  .withFilter(Expressions.field("teacher_id").eq(2))
 );
 ```
 
