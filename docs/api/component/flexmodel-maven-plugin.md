@@ -4,10 +4,10 @@ sidebar_position: 20
 
 # flexmodel-maven-plugin
 
- Flexmodel的maven插件，当作为ORM框架使用时，可通过json描述文件生成模板代码，大量的重复代码可以自动生成，减少开发人员开发成本。
+Flexmodel的maven插件，当作为ORM框架使用时，可通过json描述文件生成实体类、DAO等代码，减少开发人员开发成本。
 
 1. 创建json描述文件 import.json
-![描述文件](img/img2.png)
+   ![描述文件](img/img2.png)
 
 2. 引入插件
 
