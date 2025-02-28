@@ -78,6 +78,9 @@ const config: Config = {
         theme: {
           // Change with your site colors
           primaryColor: '#1890ff',
+          options: {
+            disableSearch: true
+          }
         },
       },
     ] satisfies Redocusaurus.PresetEntry,
