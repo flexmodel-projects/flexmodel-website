@@ -15,7 +15,7 @@ Flexmodel的maven插件，当作为ORM框架使用时，可通过json描述文�
 <plugin>
     <groupId>tech.wetech.flexmodel</groupId>
     <artifactId>flexmodel-maven-plugin</artifactId>
-    <version>${project.version}</version>
+    <version>LATEST</version>
     <executions>
         <execution>
             <phase>generate-sources</phase>

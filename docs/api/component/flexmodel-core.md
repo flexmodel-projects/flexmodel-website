@@ -79,14 +79,6 @@ sidebar_position: 10
 
 序列是指按照一定规律增加的数字，一般作为唯一标识符使用，可以与年月日或特定字符组合使用。
 
-### 验证器（Validator）
-
-验证器是对用户提交的数据进行合法性验证，开发者可自定义验证器来支持业务功能。
-
-### 值生成器（ValueGenerator）
-
-值生成器可用于默认值计算，开发者可自定义值生成器来支持业务功能。
-
 ## 使用
 
 ### 开发集成
@@ -316,8 +308,8 @@ session.createEntity("teacher", entity -> entity
   .addField(new IDField("id").setComment("Primary Key"))
   // 姓名
   .addField(new StringField("name").setComment("姓名").setNullable(false).setLength(10))
-  // 年龄，支持设置验证器进行业务验证
-  .addField(new IntField("age").setComment("年龄").addValidator(new NumberRangeValidator<>(1, 300)))
+  // 年龄
+  .addField(new IntField("age").setComment("年龄"))
   // 备注
   .addField(new TextField("description").setComment("备注"))
   // 生日
@@ -325,7 +317,7 @@ session.createEntity("teacher", entity -> entity
   // 是否禁用
   .addField(new BooleanField("isLocked").setNullable(false).setDefaultValue(false).setComment("是否禁用"))
   // 创建时间，设置默认值等于当前时间
-  .addField(new DatetimeField("createDatetime").setComment("创建日期时间").addCalculation(new DatetimeNowValueCalculator()))
+  .addField(new DatetimeField("createDatetime").setComment("创建日期时间").setGeneratedValue(DefaultGeneratedValue.NOW_ON_CREATE))
   // 扩展信息
   .addField(new JsonField("extra").setComment("扩展信息"))
   // 创建索引
@@ -384,7 +376,6 @@ index.addField("name");
 // 是否唯一
 index.setUnique(true);
 // 索引验证提示
-index.setValidMessage("名称字段必须唯一");
 session.createIndex(index);
 // 组合索引
 // when include multiple field
