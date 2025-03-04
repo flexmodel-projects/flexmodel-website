@@ -9,7 +9,7 @@ Flexmodel框架采用JSON格式定义模型，此文档为Schema定义描述。
 
 ## 对象配置
 
-对象分为三种，entity、enum和native_query，实体对应数据库物理表，enum为枚举类型，native_query为本地查询。
+对象分为三种，`ENTITY`、`ENUM`和`NATIVE_QUERY`，实体对应数据库物理表，`ENUM`为枚举类型，`NATIVE_QUERY`为本地查询。
 
 对象包含以下公共属性：
 
@@ -37,101 +37,101 @@ Flexmodel框架采用JSON格式定义模型，此文档为Schema定义描述。
 
 | 名称       | 描述                         |  
 |----------|----------------------------|  
-| id       | 唯一标识符，通常用于区分不同记录。          |  
-| string   | 字符串类型，用于存储文本数据。            |  
-| text     | 文本类型，适用于存储大量文本信息。          |  
-| decimal  | 精确的小数类型，常用于财务数据。           |  
-| int      | 整数类型，通常用于存储整数值。            |  
-| bigint   | 大整数类型，适用于存储超出标准整数范围的值。     |  
-| boolean  | 布尔类型，仅能存储真（true）或假（false）。 |  
-| datetime | 日期时间类型，用于存储日期和时间信息。        |  
-| date     | 日期类型，仅用于存储日期，不包含时间。        |  
-| json     | JSON格式，用于存储结构化数据。          |  
-| enum     | 枚举类型，定义一组有限的可能值。           |  
-| relation | 关系类型，表示与数据的关联。             |  
+| ID       | 唯一标识符，通常用于区分不同记录。          |  
+| STRING   | 字符串类型，用于存储文本数据。            |  
+| TEXT     | 文本类型，适用于存储大量文本信息。          |  
+| DECIMAL  | 精确的小数类型，常用于财务数据。           |  
+| INT      | 整数类型，通常用于存储整数值。            |  
+| BIGINT   | 大整数类型，适用于存储超出标准整数范围的值。     |  
+| BOOLEAN  | 布尔类型，仅能存储真（true）或假（false）。 |  
+| DATETIME | 日期时间类型，用于存储日期和时间信息。        |  
+| DATE     | 日期类型，仅用于存储日期，不包含时间。        |  
+| JSON     | JSON格式，用于存储结构化数据。          |  
+| ENUM     | 枚举类型，定义一组有限的可能值。           |  
+| RELATION | 关系类型，表示与数据的关联。             |  
 
 字段包含以下公共属性：
 
-| 属性                   | 类型      | 可选属性 | 描述             |
-|----------------------|---------|------|----------------|
-| name                 | String  | 否    | 对象名称           |
-| comment              | String  | 是    | 注释             |
-| type                 | String  | 否    | 对象类型           |
-| unique               | Boolean | 是    | 是否唯一，默认值为false |
-| nullable             | Boolean | 是    | 可为空，默认值为true   |
-| defaultValue         | Any     | 是    | 默认值            |
-| additionalProperties | Object  | 是    | 其他属性，可用于扩展     |
+| 属性                   | 类型      | 可选属性 | 描述               |
+|----------------------|---------|------|------------------|
+| name                 | String  | 否    | 对象名称             |
+| comment              | String  | 是    | 注释               |
+| type                 | String  | 否    | 对象类型             |
+| unique               | Boolean | 是    | 是否唯一，默认值为`false` |
+| nullable             | Boolean | 是    | 可为空，默认值为`true`   |
+| defaultValue         | Any     | 是    | 默认值              |
+| additionalProperties | Object  | 是    | 其他属性，可用于扩展       |
 
 以下为各种类型字段的专有属性：
 
-**id**
+**ID**
 
 | 属性             | 类型     | 可选属性 | 描述                                                                                                       |
   |----------------|--------|------|----------------------------------------------------------------------------------------------------------|
 | generatedValue | String | 否    | 可配置`AUTO_INCREMENT`\|`UUID`\|`ULID`\|`BIGINT_NOT_GENERATED`\|`STRING_NOT_GENERATED`，默认值为`AUTO_INCREMENT` |
 
-**string**
+**STRING**
 
-| 属性     | 类型     | 可选属性 | 描述         |
-|--------|--------|------|------------|
-| length | Number | 是    | 长度，默认值为255 |
+| 属性     | 类型     | 可选属性 | 描述           |
+|--------|--------|------|--------------|
+| length | Number | 是    | 长度，默认值为`255` |
 
-**text**
+**TEXT**
 
 | 属性 | 类型 | 可选属性 | 描述 |
     |----|----|------|----|
 
-**decimal**
+**DECIMAL**
 
-| 属性        | 类型     | 可选属性 | 描述          |
-    |-----------|--------|------|-------------|
-| precision | Number | 是    | 数据长度，默认值为20 |
-| scale     | Number | 是    | 小数长度，默认值为2  |
+| 属性        | 类型     | 可选属性 | 描述            |
+    |-----------|--------|------|---------------|
+| precision | Number | 是    | 数据长度，默认值为`20` |
+| scale     | Number | 是    | 小数长度，默认值为`2`  |
 
-**int**
-
-| 属性 | 类型 | 可选属性 | 描述 |
-|----|----|------|----|
-
-**bigint**
+**INT**
 
 | 属性 | 类型 | 可选属性 | 描述 |
 |----|----|------|----|
 
-**boolean**
+**BIGINT**
 
 | 属性 | 类型 | 可选属性 | 描述 |
 |----|----|------|----|
 
-**datetime**
+**BOOLEAN**
+
+| 属性 | 类型 | 可选属性 | 描述 |
+|----|----|------|----|
+
+**DATETIME**
 
 | 属性             | 类型     | 可选属性 | 描述                                                                       |
 |----------------|--------|------|--------------------------------------------------------------------------|
 | generatedValue | String | 是    | 生成当前日期时间，可配置`NOW_ON_CREATE`\|`NOW_ON_UPDATE`\|`NOW_ON_CREATE_AND_UPDATE` |
 
-**date**
+**DATE**
 
 | 属性             | 类型     | 可选属性 | 描述                                                                     |
 |----------------|--------|------|------------------------------------------------------------------------|
 | generatedValue | String | 是    | 生成当前日期，可配置`NOW_ON_CREATE`\|`NOW_ON_UPDATE`\|`NOW_ON_CREATE_AND_UPDATE` |
 
-**json**
+**JSON**
 
 | 属性 | 类型 | 可选属性 | 描述 |
 |----|----|------|----|
 
-**enum**
+**ENUM**
 
-| 属性       | 类型      | 可选属性 | 描述              |
-|----------|---------|------|-----------------|
-| multiple | Boolean | 是    | 是否多条，默认值为false  |
-| from     | String  | 否    | 枚举从哪里来，从枚举定义中获取 |
+| 属性       | 类型      | 可选属性 | 描述               |
+|----------|---------|------|------------------|
+| multiple | Boolean | 是    | 是否多条，默认值为`false` |
+| from     | String  | 否    | 枚举从哪里来，从枚举定义中获取  |
 
-**relation**
+**RELATION**
 
 | 属性            | 类型      | 可选属性 | 描述                                 |
 |---------------|---------|------|------------------------------------|
-| multiple      | Boolean | 否    | 是否多条，默认值为false                     |
+| multiple      | Boolean | 否    | 是否多条，默认值为`false`                   |
 | from          | String  | 否    | 数据从哪里来，从实体定义中获取                    |
 | localField    | String  | 否    | 本地字段                               |
 | foreignField  | String  | 否    | 外键字段                               |
@@ -142,7 +142,7 @@ Flexmodel框架采用JSON格式定义模型，此文档为Schema定义描述。
 | 属性        | 父属性       | 类型      | 可选属性 | 描述                           |
 |-----------|-----------|---------|------|------------------------------|
 | name      | -         | String  | 否    | 索引名称                         |
-| unique    | -         | Boolean | 是    | 是否唯一，默认值false                |
+| unique    | -         | Boolean | 是    | 是否唯一，默认值`false`              |
 | fields    | -         | Array   | 否    | 索引字段                         |
 | fieldName | fields[n] | Boolean | 否    | 字段名称                         |
 | direction | fields[n] | String  | 否    | 排序方式，`ASC`\|`DESC`，默认值`DESC` |
@@ -154,12 +154,12 @@ Flexmodel框架采用JSON格式定义模型，此文档为Schema定义描述。
 ```json
 [
   {
-    "type": "entity",
+    "type": "ENTITY",
     "name": "Student",
     "fields": [
       {
         "name": "id",
-        "type": "id",
+        "type": "ID",
         "modelName": "Student",
         "unique": false,
         "nullable": true,
@@ -167,7 +167,7 @@ Flexmodel框架采用JSON格式定义模型，此文档为Schema定义描述。
       },
       {
         "name": "studentName",
-        "type": "string",
+        "type": "STRING",
         "modelName": "Student",
         "unique": false,
         "nullable": true,
@@ -175,7 +175,7 @@ Flexmodel框架采用JSON格式定义模型，此文档为Schema定义描述。
       },
       {
         "name": "gender",
-        "type": "enum",
+        "type": "ENUM",
         "from": "UserGender",
         "multiple": false,
         "modelName": "Student",
@@ -184,7 +184,7 @@ Flexmodel框架采用JSON格式定义模型，此文档为Schema定义描述。
       },
       {
         "name": "interest",
-        "type": "enum",
+        "type": "ENUM",
         "from": "user_interest",
         "multiple": true,
         "modelName": "Student",
@@ -193,21 +193,21 @@ Flexmodel框架采用JSON格式定义模型，此文档为Schema定义描述。
       },
       {
         "name": "age",
-        "type": "int",
+        "type": "INT",
         "modelName": "Student",
         "unique": false,
         "nullable": true
       },
       {
         "name": "classId",
-        "type": "bigint",
+        "type": "BIGINT",
         "modelName": "Student",
         "unique": false,
         "nullable": true
       },
       {
         "name": "studentDetail",
-        "type": "relation",
+        "type": "RELATION",
         "modelName": "Student",
         "unique": false,
         "nullable": true,
@@ -233,12 +233,12 @@ Flexmodel框架采用JSON格式定义模型，此文档为Schema定义描述。
     ]
   },
   {
-    "type": "entity",
+    "type": "ENTITY",
     "name": "StudentDetail",
     "fields": [
       {
         "name": "id",
-        "type": "id",
+        "type": "ID",
         "modelName": "StudentDetail",
         "unique": false,
         "nullable": true,
@@ -246,13 +246,13 @@ Flexmodel框架采用JSON格式定义模型，此文档为Schema定义描述。
       },
       {
         "name": "studentId",
-        "type": "bigint",
+        "type": "BIGINT",
         "modelName": "StudentDetail",
         "unique": false,
         "nullable": true
       },
       {
-        "type": "relation",
+        "type": "RELATION",
         "name": "student",
         "comment": "班级",
         "modelName": "StudentDetail",
@@ -264,7 +264,7 @@ Flexmodel框架采用JSON格式定义模型，此文档为Schema定义描述。
       },
       {
         "name": "description",
-        "type": "text",
+        "type": "TEXT",
         "modelName": "StudentDetail",
         "unique": false,
         "nullable": true
@@ -273,7 +273,7 @@ Flexmodel框架采用JSON格式定义模型，此文档为Schema定义描述。
   },
   {
     "name": "UserGender",
-    "type": "enum",
+    "type": "ENUM",
     "elements": [
       "UNKNOWN",
       "MALE",
@@ -283,7 +283,7 @@ Flexmodel框架采用JSON格式定义模型，此文档为Schema定义描述。
   },
   {
     "name": "user_interest",
-    "type": "enum",
+    "type": "ENUM",
     "elements": [
       "chang",
       "tiao",
@@ -304,21 +304,21 @@ Student:
 | 名称            | 类型              |  
 |---------------|-----------------|
 | studentDetail | StudentDetail   |  
-| age           | Int             |  
+| age           | INT             |  
 | id            | ID              |  
 | interest      | user_interest[] |  
-| classId       | BigInt          |  
-| studentName   | String          |  
+| classId       | BIGINT          |  
+| studentName   | STRING          |  
 | gender        | UserGender      |  
 
 StudentDetail:
 
-| 名称          | 类型          |  
-|-------------|-------------|
-| id          | ID          |
-| studentId   | BigInt      |
-| student     | Student     |
-| description | description |
+| 名称          | 类型      |  
+|-------------|---------|
+| id          | ID      |
+| studentId   | BIGINT  |
+| student     | Student |
+| description | TEXT    |
 
 ### 枚举描述
 
@@ -338,7 +338,7 @@ StudentDetail:
 ```json
 {
   "name": "UserGender",
-  "type": "enum",
+  "type": "ENUM",
   "elements": [
     "UNKNOWN",
     "MALE",
@@ -381,7 +381,7 @@ StudentDetail:
 ```json
 {
   "name": "分组查询",
-  "type": "native_query",
+  "type": "NATIVE_QUERY",
   "statement": "select count(id) as total, gender, max(age) as ageSum from Student group by gender"
 }
 ```
