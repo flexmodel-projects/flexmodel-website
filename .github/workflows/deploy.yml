@@ -22,5 +22,5 @@ jobs:
           command_timeout: 10m
           script: |
             cd /opt/flexmodel-quickstarts/docker-compose
-            docker-compose pull
+            docker-compose pull flexmodel
             docker-compose up -d
