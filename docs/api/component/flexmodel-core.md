@@ -12,6 +12,12 @@ sidebar_position: 10
 * 支持数据库表、视图、字段、序列、索引的动态创建和删除，保证足够灵活
 * 支持多达十几种数据库的适配，且已经拥有大量集成测试用例覆盖，以确保适用性和可靠性
 * 支持自定义业务字段类型、数据验证器、值计算逻辑、建模的持久化方式
+* 支持灵活的查询条件构建和DSL查询语法
+* 支持关联查询和嵌套查询
+* 支持分页、排序、聚合等高级查询功能
+* 支持原生SQL查询和MongoDB查询
+* 支持事务管理和批量操作
+* 支持缓存机制和性能优化
 
 ## 数据库支持
 
@@ -19,25 +25,24 @@ sidebar_position: 10
 
 **关系型数据库**
 
-| 数据库名称      | 兼容版本/已验证版本    | 连接参数                   |
-|------------|---------------|------------------------|
-| MySQL      | 8.0           |                        |
-| MariaDB    | 10.3.6        |                        |
-| Oracle     | 21c           |                        |
-| SQL Server | 2017-CU12     |                        |
-| PostgreSQL | 16-3.4-alpine |                        |
-| DB2        | 11.5.0.0a     | progressiveStreaming=2 |
-| SQLite     | 3.45.3        |                        |
-| Informix   | 14.10         |                        |
-| GBase      | 8s            | DELIMIDENT=y;          |
-| 达梦         | DM8           |                        |
-| TiDB       | v7.1.5        |                        |
+| 数据库名称      | 兼容版本/已验证版本    | 连接参数                   | 状态 |
+|------------|---------------|------------------------|------|
+| MySQL      | 8.0           |                        | ✅ 完整支持 |
+| MariaDB    | 10.3.6        |                        | ✅ 完整支持 |
+| Oracle     | 21c           |                        | ✅ 完整支持 |
+| SQL Server | 2017-CU12     |                        | ✅ 完整支持 |
+| PostgreSQL | 16-3.4-alpine |                        | ✅ 完整支持 |
+| DB2        | 11.5.0.0a     | progressiveStreaming=2 | ✅ 基础支持 |
+| SQLite     | 3.45.3        |                        | ✅ 完整支持 |
+| GBase      | 8s            | DELIMIDENT=y;          | ✅ 基础支持 |
+| 达梦         | DM8           |                        | ✅ 基础支持 |
+| TiDB       | v7.1.5        |                        | ✅ 完整支持 |
 
 **文档型数据库**
 
-| 数据库名称   | 兼容版本 | 连接参数 |
-|---------|------|------|
-| MongoDB | 5.0  |      |
+| 数据库名称   | 兼容版本 | 连接参数 | 状态 |
+|---------|------|------|------|
+| MongoDB | 5.0  |      | ✅ 完整支持 |
 
 ## 基本概念
 
@@ -53,19 +58,19 @@ sidebar_position: 10
 
 #### 内置的字段类型
 
-| 类型       | 名称   | Java类型映射                |
-|----------|------|-------------------------|
-| string   | 字符串  | java.lang.String        |
-| text     | 文本   | java.lang.String        |
-| int      | 整型   | java.lang.Integer       |
-| bigint   | 长整型  | java.lang.Long          |
-| decimal  | 小数   | java.lang.Double        |
-| boolean  | 布尔   | java.lang.Boolean       |
-| datetime | 日期时间 | java.time.LocalDateTime |
-| date     | 日期   | java.time.LocalDate     |
-| json     | JSON | N/A                     |
-| id       | ID   | N/A                     |
-| relation | 关系   | N/A                     |
+| 类型       | 名称   | Java类型映射                | 描述 |
+|----------|------|-------------------------|------|
+| String   | 字符串  | java.lang.String        | 可变长度字符串 |
+| Float    | 浮点数  | java.lang.Double        | 精确小数类型 |
+| Int      | 整型   | java.lang.Integer       | 32位整数 |
+| Long     | 长整型  | java.lang.Long          | 64位整数 |
+| Boolean  | 布尔   | java.lang.Boolean       | 布尔值 |
+| DateTime | 日期时间 | java.time.LocalDateTime | 日期时间 |
+| Date     | 日期   | java.time.LocalDate     | 日期 |
+| Time     | 时间   | java.time.LocalTime     | 时间 |
+| JSON     | JSON | java.util.Map           | JSON数据 |
+| Enum     | 枚举   | java.lang.String        | 枚举值 |
+| Relation | 关系   | 关联对象                 | 实体关联 |
 
 ### 视图（View）
 
@@ -78,6 +83,179 @@ sidebar_position: 10
 ### 序列（Sequence）
 
 序列是指按照一定规律增加的数字，一般作为唯一标识符使用，可以与年月日或特定字符组合使用。
+
+## 核心功能
+
+### 查询构建器
+
+Flexmodel提供了强大的查询构建器，支持多种查询方式：
+
+```java
+// 基础查询 - 使用Query.Builder（推荐）
+Query query = Query.Builder.create()
+    .select("id", "name", "age")
+    .where(Expressions.field("age").gte(18))
+    .orderBy(orderBy -> orderBy.asc("name"))
+    .page(1, 10)
+    .build();
+
+List<Map<String, Object>> results = session.data().find("users", query);
+
+// 关联查询
+Query joinQuery = Query.Builder.create()
+    .select(select -> select
+        .field("studentName", "studentName")
+        .field("description", "studentDetail.description")
+    )
+    .leftJoin(join -> join
+        .model("studentDetail")
+    )
+    .where(Expressions.field("id").eq("1"))
+    .build();
+
+// 聚合查询
+Query aggregateQuery = Query.Builder.create()
+    .select(projection -> projection
+        .field("teacher_name", field("name"))
+        .field("course_count", count(field("courses.teacher_id")))
+        .field("course_score_sum", sum(field("courses.c_score")))
+    )
+    .innerJoin(joiners -> joiners
+        .model("courses")
+        .where("""
+            {
+              "teacher_id": {
+                "_ne": 999
+              }
+            }
+        """))
+    .groupBy(groupBy -> groupBy
+        .field("teacher_name")
+    )
+    .where(Expressions.field("name").eq("李四"))
+    .build();
+```
+
+### 表达式构建
+
+支持丰富的表达式操作：
+
+```java
+// 比较操作
+Expressions.field("age").eq(18)
+Expressions.field("age").gt(18)
+Expressions.field("age").between(18, 25)
+
+// 字符串操作
+Expressions.field("name").contains("张")
+Expressions.field("name").startsWith("张")
+Expressions.field("name").endsWith("三")
+
+// 逻辑操作
+Expressions.field("age").gte(18).and(Expressions.field("status").eq("ACTIVE"))
+Expressions.field("status").eq("ACTIVE").or(Expressions.field("status").eq("PENDING"))
+
+// 集合操作
+Expressions.field("status").in("ACTIVE", "PENDING")
+Expressions.field("status").nin("DELETED")
+
+// 方法引用支持
+Expressions.field(User::getName).eq("张三")
+```
+
+### 模型定义
+
+支持灵活的模型定义：
+
+```java
+// 实体定义
+session.schema().createEntity("Student", entity -> entity
+    .addField(new StringField("id").asIdentity().setDefaultValue(UUID))
+    .addField(new StringField("studentName").setLength(255))
+    .addField(new IntField("age"))
+    .addField(new EnumField("gender").setFrom("UserGender"))
+    .addField(new RelationField("studentClass")
+        .setFrom("Classes")
+        .setLocalField("classId")
+        .setForeignField("id"))
+    .addIndex(new IndexDefinition("Student")
+        .setName("IDX_studentName")
+        .addField("studentName", Direction.ASC)
+        .setUnique(false))
+);
+
+// 枚举定义
+session.schema().createEnum("UserGender", enumDef -> enumDef
+    .setComment("用户性别")
+    .addElement("UNKNOWN")
+    .addElement("MALE")
+    .addElement("FEMALE")
+);
+```
+
+### 数据操作
+
+```java
+// 插入操作
+Map<String, Object> userData = Map.of(
+    "name", "张三",
+    "age", 25,
+    "email", "zhangsan@example.com"
+);
+int affectedRows = session.data().insert("users", userData);
+
+// 批量插入
+List<Map<String, Object>> users = Arrays.asList(user1, user2, user3);
+session.data().insertAll("users", users);
+
+// 更新操作
+Map<String, Object> updateData = Map.of("age", 26);
+int updatedRows = session.data().update("users", updateData, 
+    Expressions.field("id").eq("1"));
+
+// 删除操作
+int deletedRows = session.data().delete("users", 
+    Expressions.field("id").eq("1"));
+
+// 查询操作
+Map<String, Object> user = session.data().findById("users", "1");
+List<Map<String, Object>> users = session.data().find("users", query);
+long count = session.data().count("users", query);
+boolean exists = session.data().exists("users", query);
+```
+
+### 原生查询支持
+
+```java
+// SQL原生查询
+List<Map<String, Object>> results = session.data().findByNativeStatement(
+    "SELECT * FROM users WHERE age > ${minAge} AND status = ${status}",
+    Map.of("minAge", 18, "status", "ACTIVE"),
+    Map.class
+);
+
+// MongoDB原生查询
+List<Map<String, Object>> results = session.data().findByNativeStatement(
+    """
+    {
+        "find": "users",
+        "filter": { "age": { "$gt": "${minAge}" }, "status": "${status}" },
+        "sort": {"age": -1},
+        "limit": 10
+    }
+    """,
+    Map.of("minAge", 18, "status", "ACTIVE"),
+    Map.class
+);
+
+// 原生查询模型
+NativeQueryDefinition queryModel = new NativeQueryDefinition("getActiveUsers");
+queryModel.setStatement("SELECT * FROM users WHERE status = 'ACTIVE'");
+session.schema().createNativeQuery(queryModel);
+
+List<Map<String, Object>> results = session.data().findByNativeQuery(
+    "getActiveUsers", Map.of(), Map.class);
+```
 
 ## 使用
 
@@ -100,363 +278,248 @@ sidebar_position: 10
 FlexModel本身不提供数据库的驱动连接的支持，所以还需要引入数据库厂商依赖，以MySQL为例
 
 ```xml
-<!-- 数据库驱动 -->
-<dependencies>
-  <dependency>
-    <groupId>com.mysql</groupId>
-    <artifactId>mysql-connector-j</artifactId>
-    <version>8.3.0</version>
-    <scope>test</scope>
-  </dependency>
-<!-- 任意数据库连接池 -->  
-  <dependency>
-    <groupId>com.zaxxer</groupId>
-    <artifactId>HikariCP</artifactId>
-    <version>5.1.0</version>
-    <scope>test</scope>
-  </dependency>
-</dependencies>
+<dependency>
+  <groupId>mysql</groupId>
+  <artifactId>mysql-connector-java</artifactId>
+  <version>8.0.33</version>
+</dependency>
 ```
 
-*然后配置完就能使用了*
+### 基本使用
 
 ```java
-public class Simple {
-  public static void main(String[] args) {
-    // 新建连接池
-    HikariDataSource dataSource = new HikariDataSource();
-    dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/test_db");
-    dataSource.setUsername("root");
-    dataSource.setPassword("123456");
-    // 通过数据源名称获取对应的数据源
-    String dsName = "mysql";
+// 创建SessionFactory
+SessionFactory sessionFactory = SessionFactory.builder()
+    .setDefaultDataSourceProvider(new JdbcDataSourceProvider("default", dataSource))
+    .build();
 
-    // 设置默认数据源
-    JdbcDataSourceProvider jdbcDataSourceProvider = new JdbcDataSourceProvider(dataSource);
-    SessionFactory sessionFactory = SessionFactory.builder()
-      .setDefaultDataSourceProvider(jdbcDataSourceProvider)
-      .build();
-    // 创建会话，开始使用
-    Session session = sessionFactory.createSession(dsName);
-  }
+// 创建Session
+Session session = sessionFactory.createSession("default");
+
+// 查询操作
+List<Map<String, Object>> users = session.data().find("users", 
+    Query.Builder.create()
+        .where(Expressions.field("age").gte(18))
+        .build());
+
+// 插入操作
+Map<String, Object> userData = Map.of("name", "张三", "age", 18);
+int affectedRows = session.data().insert("users", userData);
+
+// 更新操作
+session.data().update("users", 
+    Map.of("age", 19), 
+    Expressions.field("id").eq("1"));
+
+// 删除操作
+session.data().delete("users", 
+    Expressions.field("id").eq("1"));
+```
+
+### 高级功能
+
+#### 事务支持
+
+```java
+session.startTransaction();
+try {
+    session.data().insert("users", user1);
+    session.data().insert("users", user2);
+    session.commit();
+} catch (Exception e) {
+    session.rollback();
+    throw e;
 }
 ```
 
-### 增删改查
-
-#### 查询
-
-查询示例
+#### 批量操作
 
 ```java
-List<Map<String, Object>> groupList = session.find(entityName, query -> query
-  // 设置查询字段，不设置则查询模型（实体/视图）的所有字段
-  .setProjection(projection -> projection
-    .addField("teacher_name", field("name"))
-    // 支持的函数见 tech.wetech.flexmodel.Projections 类
-    .addField("course_count", count(field(courseEntityName + ".teacher_id")))
-    .addField("course_score_sum", sum(field(courseEntityName + ".c_score")))
-  )
-  // 设置关联表
-  .setJoins(joiners -> joiners
-    .addInnerJoin(joiner -> joiner
-      .setFrom(courseEntityName)
-      .setLocalField("id") // 主键字段，存在关联关系时可不指定
-      .setForeignField("teacher_id") // 外键字段，存在关联关系时可不指定
-      .withFilter(Expressions.field("teacher_id").ne(999))
-    )
-  )
-  // 设置分组
-  .setGroupBy(groupBy -> groupBy
-    .addField("teacher_name")
-  )
-  .withFilter(
-      Expressions.field("username").eq("john_doe")
-      .or(Expressions.field("remark").eq("aa")
-          .and(Expressions.field("locked").eq(false).and(Expressions.field("email").ne("jane_doe@example.com"))
-              .and(Expressions.field("age").gt(18).and(Expressions.field("registrationDate").ge("2020-01-01")
-                  .and(Expressions.field("age").lt(65))))))
-          .and(Expressions.field("lastLogin").le("2023-01-01"))
-          .or(Expressions.field("role").notIn(List.of("banned")))
-      .or(Expressions.field("status").in(List.of("active", "pending")))
-      .and(Expressions.field("createdAt").between("2022-01-01", "2022-12-31"))
-  )
-  // 设置排序
-  .setSort(sort -> sort.addOrder("id", Direction.DESC))
-  // 设置分页查询
-  .setPage(1, 100)
-);
+// 批量插入
+List<Map<String, Object>> users = Arrays.asList(user1, user2, user3);
+session.data().insertAll("users", users);
 
+// 批量更新
+session.data().update("users", 
+    Map.of("status", "INACTIVE"), 
+    Expressions.field("lastLoginTime").lt(LocalDateTime.now().minusDays(30)));
 ```
 
-日期时间格式化
+#### DSL操作
 
 ```java
-// 支持yyyy-MM-dd hh:mm:ss格式的日期时间格式化
-List<Map<String, Object>> dateFormatList = session.find(entityName, query -> query
-  .setProjection(projection -> projection
-    .addField("datetime", dateFormat(field("birthday"), "yyyy/MM/dd hh:mm:ss"))
-    .addField("user_count", count(field("id"))))
-  .setGroupBy(groupBy ->
-    groupBy.addField("datetime") // 根据别名进行分组
-  )
-);
+// DSL插入
+session.dsl()
+    .insertInto("users")
+    .values(userData)
+    .execute();
+
+// DSL更新
+session.dsl()
+    .update("users")
+    .set("age", 19)
+    .where(Expressions.field("id").eq("1"))
+    .execute();
+
+// DSL删除
+session.dsl()
+    .deleteFrom("users")
+    .where(Expressions.field("id").eq("1"))
+    .execute();
 ```
 
-按照一年中的天数分组
+### Quarkus集成
+
+FlexModel提供了与Quarkus框架的深度集成：
 
 ```java
-List<Map<String, Object>> dayOfYearList = session.find(entityName, query -> query
-  .setProjection(projection -> projection
-    .addField("dayOfYear", dayOfYear(field("birthday")))
-    .addField("user_count", count(field("id"))))
-  .setGroupBy(groupBy ->
-    groupBy.addField("dayOfYear")
-  )
-);
+// 配置SessionFactory
+@ApplicationScoped
+public class SessionConfig {
+    @Produces
+    @ApplicationScoped
+    public SessionFactory sessionFactory() {
+        HikariDataSource dataSource = new HikariDataSource();
+        dataSource.setJdbcUrl("jdbc:sqlite:file::memory:?cache=shared");
+
+        return SessionFactory.builder()
+            .setDefaultDataSourceProvider(new JdbcDataSourceProvider("system", dataSource))
+            .build();
+    }
+}
+
+// 在REST资源中使用
+@Path("/users")
+@Produces(MediaType.APPLICATION_JSON)
+@SessionManaged // 类级别Session管理
+public class UserResource {
+    @Inject
+    private Session session; // 自动注入当前请求的Session
+
+    @GET
+    public Response getAllUsers() {
+        List<Map<String, Object>> users = session.data().find("users", 
+            Query.Builder.create().build());
+        return Response.ok(users).build();
+    }
+}
+
+// 在服务类中使用
+@ApplicationScoped
+@SessionManaged
+public class UserService {
+    @Inject
+    private Session session;
+
+    public List<Map<String, Object>> getAllUsers() {
+        return session.data().find("users", Query.Builder.create().build());
+    }
+}
 ```
 
-按照一月中的天数进行分组
+## 扩展功能
+
+### 自定义字段类型
 
 ```java
-List<Map<String, Object>> dayOfMonthList = session.find(entityName, query -> query
-  .setProjection(projection -> projection
-    .addField("dayOfMonth", dayOfMonth(field("birthday")))
-    .addField("user_count", count(field("id"))))
-  .setGroupBy(groupBy ->
-    groupBy.addField("dayOfMonth")
-  )
-);
+public class CustomField extends TypedField<String, CustomField> {
+    public CustomField(String name) {
+        super(name, "Custom");
+    }
+    
+    // 自定义逻辑
+}
 ```
 
-按照一周中的天数进行分组
+### 自定义验证器
 
 ```java
-List<Map<String, Object>> dayOfWeekList = session.find(entityName, query -> query
-  .setProjection(projection -> projection
-    .addField("dayOfWeek", dayOfWeek(field("birthday")))
-    .addField("user_count", count(field("id"))))
-  .setGroupBy(groupBy ->
-    groupBy.addField("dayOfWeek")
-  )
-);
+public class AgeValidator implements FieldValidator {
+    @Override
+    public void validate(Object value) {
+        if (value instanceof Integer) {
+            int age = (Integer) value;
+            if (age < 0 || age > 150) {
+                throw new ValidationException("年龄必须在0-150之间");
+            }
+        }
+    }
+}
 ```
 
-查询返回实体类
+### 自定义计算器
 
 ```java
-List<TeacherDTO> list = session.find(entityName, query -> query, TeacherDTO.class);
+public class FullNameCalculator implements FieldCalculator {
+    @Override
+    public Object calculate(Map<String, Object> context) {
+        String firstName = (String) context.get("firstName");
+        String lastName = (String) context.get("lastName");
+        return firstName + " " + lastName;
+    }
+}
 ```
 
-#### 新增
+## 性能优化
 
-新增一条数据
+### 查询优化
+
+1. **索引使用**: 为常用查询字段创建索引
+2. **分页查询**: 使用分页避免大量数据查询
+3. **字段选择**: 只选择需要的字段
+4. **关联查询**: 合理使用关联查询，避免N+1问题
+
+### 连接池配置
 
 ```java
-Map<String, Object> record = new HashMap<>();
-record.put("name", "张三丰");
-record.put("age", 218);
-record.put("description", "武当山道士");
-record.put("createDatetime", LocalDateTime.now());
-record.put("birthday", LocalDate.of(1247, 1, 1));
-record.put("isLocked", true);
-Assertions.assertEquals(1, session.insert(entityName, record));
+// 配置连接池
+DataSource datasource = new HikariDataSource();
+((HikariDataSource) datasource).setMaximumPoolSize(20);
+((HikariDataSource) datasource).setMinimumIdle(5);
 ```
 
-新增多条数据
+### 缓存机制
 
 ```java
-String data = """
-      [
-        { "teacher_id": 1, "c_name": "语文", "c_score": 92 },
-        { "teacher_id": 2, "c_name": "数学", "c_score": 78 },
-        { "teacher_id": 3, "c_name": "英语", "c_score": 85 }
-      ]
-      """;
-    List<Map<String, Object>> records = JsonUtils.getInstance().parseToObject(data, List.class);
-    session.insertAll(entityName, records);
+// 配置缓存
+SessionFactory sessionFactory = SessionFactory.builder()
+    .setDefaultDataSourceProvider(new JdbcDataSourceProvider("default", dataSource))
+    .setCache(new ConcurrentHashMapCache()) // 使用内存缓存
+    .build();
 ```
 
-#### 更新
+## 最佳实践
 
-根据ID更新
+1. **模型设计**: 合理设计实体关系，避免过度复杂
+2. **查询优化**: 使用合适的查询条件和索引
+3. **事务管理**: 合理使用事务，避免长事务
+4. **错误处理**: 妥善处理异常情况
+5. **日志记录**: 记录关键操作的日志
+6. **Session管理**: 在Web应用中合理使用Session生命周期管理
+7. **批量操作**: 对于大量数据操作，使用批量接口提高性能
 
-```java
-Map<String, Object> record = new HashMap<>();
-record.put("name", "李白");
-record.put("age", 61);
-record.put("description", "字太白，号青莲居士");
-Long id = 999;
-int affectedRows = session.updateById(entityName, record2, id);
-```
+## 测试支持
 
-#### 删除
+FlexModel提供了完整的测试支持，包括：
 
-根据ID删除
-
-```java
-session.deleteById(entityName, 1);
-```
-
-### 实体管理
-
-创建实体
+- 单元测试框架
+- 集成测试支持
+- 多数据库测试容器
+- 测试数据管理
 
 ```java
-session.createEntity("teacher", entity -> entity
-  // 主键，当主键为整形字段时支持设置自增，也可以使用字符串配合值计算器生成
-  .addField(new IDField("id").setComment("Primary Key"))
-  // 姓名
-  .addField(new StringField("name").setComment("姓名").setNullable(false).setLength(10))
-  // 年龄
-  .addField(new IntField("age").setComment("年龄"))
-  // 备注
-  .addField(new TextField("description").setComment("备注"))
-  // 生日
-  .addField(new DateField("birthday").setComment("生日"))
-  // 是否禁用
-  .addField(new BooleanField("isLocked").setNullable(false).setDefaultValue(false).setComment("是否禁用"))
-  // 创建时间，设置默认值等于当前时间
-  .addField(new DatetimeField("createDatetime").setComment("创建日期时间").setGeneratedValue(DefaultGeneratedValue.NOW_ON_CREATE))
-  // 扩展信息
-  .addField(new JsonField("extra").setComment("扩展信息"))
-  // 创建索引
-  .addIndex(index -> index.addField("name", Direction.DESC).addField("id"))
-  .setComment("教师表")
-);
+@Testcontainers
+public class MySQLIntegrationTests extends AbstractSessionTests {
+    @Container
+    public static MySQLContainer container = new MySQLContainer("mysql:8.0");
 
-```
-
-创建字段
-
-字段即实体的属性
-
-```java
-// 创建实体时至少要有一个ID字段
-session.createEntity("teacher_course", sScore -> sScore
-  .addField(new IDField<>("id").setGeneratedValue(DefaultGeneratedValue.AUTO_INCREMENT).setComment("Primary Key"))
-  .setComment("教师成绩表")
-);
-// 创建字段
-session.createField(entityName, new StringField("c_name"));
-session.createField(entityName, new DecimalField("c_score"));
-
-```
-
-新增关联关系字段
-
-```java
-// 此功能会建立外键约束
-session.createField("teacher", new RelationField("teacher_course")
-  .setCardinality(ONE_TO_MANY) // 关联方式，如果是ONE_TO_ONE时，外键字段的会存在唯一索引约束，当关联关系是MANY_TO_MANY时，会建立中间表保存多对多的关联关系
-  .setCascadeDelete(true) // 级联删除，依赖于外键字段 on delete cascade
-  .setTargetEntity("teacher_course") // 目标实体
-  .setTargetField("teacher_id")  // 目标字段
-);
-```
-
-删除字段
-
-```java
-session.dropField("teacher_course", "name");
-```
-
-删除实体
-
-```java
-session.dropModel(entityName);
-```
-
-创建索引
-
-```java
-// 单个字段索引
-Index index = new Index("teacher", "IDX_name");
-index.addField("name");
-// 是否唯一
-index.setUnique(true);
-// 索引验证提示
-session.createIndex(index);
-// 组合索引
-// when include multiple field
-Index multipleFiledIndex = new Index("teacher");
-multipleFiledIndex.addField("birthday");
-multipleFiledIndex.addField("age", DESC);
-multipleFiledIndex.addField("is_deleted", DESC);
-multipleFiledIndex.setName("IDX_compound");
-session.createIndex(multipleFiledIndex);
-```
-
-删除索引
-
-```java
-session.dropIndex(modelName, indexName);
-```
-
-### 视图管理
-
-创建视图
-
-```java
-session.createView("teacher_course_report", "teacher", query -> query
-      .setProjection(projection -> projection
-          .addField("teacher_id", field("id"))
-          .addField("teacher_name", field("name"))
-          .addField("age_max", max(field("age")))
-          .addField("age_count", count(field("age")))
-      )
-      .setJoins(joiners -> joiners
-        .addLeftJoin(joiner -> joiner
-          .setLocalField("id") // 主键字段，存在关联关系时可不指定
-          .setForeignField("teacher_id") // 外键字段，存在关联关系时可不指定
-          .setFrom(teacherCourseEntityName)
-        )
-      )
-      .withFilter(Expressions.field("id").gte(1))
-      .setGroupBy(groupBy -> groupBy
-        .addField("id")
-        .addField("teacher_name")
-      )
-      .setSort(sort -> sort.addOrder("id", Direction.DESC))
-      .setLimit(100)
-      .setOffset(0)
-  );
-
-```
-
-查询视图数据
-
-```java
-List<Map<String, Object>> list = session.find("teacher_course_report", query -> query
-  .withFilter(Expressions.field("teacher_id").eq(2))
-);
-```
-
-删除视图
-
-```java
-session.dropModel("teacher_course_report"); // 同删除实体
-```
-
-### 自增序列
-
-新增序列
-
-```java
-String sequenceName = "user_seq";
-int initialValue = 1;
-int incrementSize = 1;
-session.createSequence(seqName, initialValue, incrementSize);
-```
-
-获取序列下一个值
-
-```java
-long sequenceNextVal = session.getSequenceNextVal(sequenceName);
-```
-
-删除序列
-
-```java
-session.dropSequence(sequenceName);
+    @BeforeAll
+    public static void beforeAll() {
+        HikariDataSource dataSource = new HikariDataSource();
+        dataSource.setJdbcUrl(container.getJdbcUrl());
+        dataSource.setUsername(container.getUsername());
+        dataSource.setPassword(container.getPassword());
+        initSession(new JdbcDataSourceProvider("default", dataSource));
+    }
+}
 ```
