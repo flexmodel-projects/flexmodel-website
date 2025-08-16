@@ -89,6 +89,14 @@ const config: Config = {
   themeConfig: {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
+    
+    // Color mode configuration
+    colorMode: {
+      defaultMode: 'dark',
+      disableSwitch: false,
+      respectPrefersColorScheme: true,
+    },
+    
     navbar: {
       title: 'Flexmodel',
       logo: {
@@ -120,7 +128,7 @@ const config: Config = {
     footer: {
       style: 'dark',
       links: [],
-      copyright: `© 2024 Flexmodel All rights reserved. Inc. <a href="https://beian.miit.gov.cn" target="_blank" style="color:#fff">苏ICP备2024089717号</a>`,
+      copyright: `© 2024 Flexmodel All rights reserved. Inc. <a href="https://beian.miit.gov.cn" target="_blank">苏ICP备2024089717号</a>`,
     },
     prism: {
       theme: prismThemes.github,

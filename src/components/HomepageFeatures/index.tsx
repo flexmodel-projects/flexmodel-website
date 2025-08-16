@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import Heading from '@theme/Heading';
+import { useEffect, useState } from 'react';
 import styles from './styles.module.css';
 
 type FeatureItem = {
@@ -38,15 +39,27 @@ const FeatureList: FeatureItem[] = [
   },
 ];
 
-function Feature({title, Svg, description}: FeatureItem) {
+function Feature({title, Svg, description, index}: FeatureItem & {index: number}) {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, index * 200);
+    return () => clearTimeout(timer);
+  }, [index]);
+
   return (
       <div className={clsx('col col--4')}>
-        <div className="text--center">
-          <Svg className={styles.featureSvg} role="img"/>
-        </div>
-        <div className="text--center padding-horiz--md">
-          <Heading as="h3">{title}</Heading>
-          <p>{description}</p>
+        <div className={clsx(styles.featureCard, isVisible && styles.featureCardVisible)}>
+          <div className={styles.featureIcon}>
+            <Svg className={styles.featureSvg} role="img"/>
+            <div className={styles.iconGlow}></div>
+          </div>
+          <div className={styles.featureContent}>
+            <Heading as="h3" className={styles.featureTitle}>{title}</Heading>
+            <p className={styles.featureDescription}>{description}</p>
+          </div>
         </div>
       </div>
   );
@@ -56,9 +69,15 @@ export default function HomepageFeatures(): JSX.Element {
   return (
       <section className={styles.features}>
         <div className="container">
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>核心特性</h2>
+            <p className={styles.sectionSubtitle}>
+              强大的功能，简单的操作，让API开发变得前所未有的简单
+            </p>
+          </div>
           <div className="row">
             {FeatureList.map((props, idx) => (
-                <Feature key={idx} {...props} />
+                <Feature key={idx} {...props} index={idx} />
             ))}
           </div>
         </div>
