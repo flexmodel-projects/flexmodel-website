@@ -6,6 +6,8 @@ sidebar_position: 1
 
 Flexmodel 提供了完整的 REST API 和 GraphQL API，用于管理数据模型、数据记录和系统配置。
 
+![Architecture_Design](Architecture_Design.png)
+
 ## 主要功能
 
 - **数据建模**: 创建和管理实体、枚举、本地查询等数据模型
