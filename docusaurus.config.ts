@@ -89,14 +89,14 @@ const config: Config = {
   themeConfig: {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
-    
+
     // Color mode configuration
     colorMode: {
       defaultMode: 'dark',
       disableSwitch: false,
       respectPrefersColorScheme: false,
     },
-    
+
     navbar: {
       title: 'Flexmodel',
       logo: {
@@ -112,7 +112,6 @@ const config: Config = {
         },*/
         {to: '/docs/tutorial/intro', sidebarId: 'tutorialSidebar', label: '文档', position: 'left'},
         {to: '/docs/api', label: 'API', sidebarId: 'apiSidebar', position: 'left'},
-        {to: '/community', label: '社区交流', position: 'left'},
         /*   {to: '/blog', label: 'Blog', position: 'left'},*/
         {
           href: 'https://preview.flexmodel.wetech.tech',
