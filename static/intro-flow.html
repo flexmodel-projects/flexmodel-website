@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Flexmodel 流程对比图</title>
+  <style>
+    :root { color-scheme: light dark; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color: #0f172a;
+      background: #ffffff;
+    }
+    .page {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px 16px 28px;
+    }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    h1 {
+      font-size: 22px;
+      line-height: 1.25;
+      margin: 0 0 8px;
+      color: #0f172a;
+      letter-spacing: 0.1px;
+    }
+    .btn-toggle {
+      padding: 4px 10px;
+      border: 1px solid #e2e8f0;
+      background: #ffffff;
+      color: #0f172a;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-toggle:hover { background: #f8fafc; border-color: #cbd5e1; }
+    p.desc {
+      margin: 0 0 14px;
+      color: #64748b;
+      font-size: 13px;
+    }
+    .card {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px;
+      background: #ffffff;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
+    }
+    .figure { width: 100%; overflow: hidden; }
+    .layout { width: 100%; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 900px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+    .lane {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 12px 6px;
+      background: #ffffff;
+    }
+    .lane-left { background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%); }
+    .lane-right { background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%); }
+    .lane-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+    .lane-header h2 { margin: 0; font-size: 16px; color: #0f172a; }
+    .chip { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; border: 1px solid; white-space: nowrap; }
+    .chip-blue { background: #eff6ff; color: #1e40af; border-color: #bfdbfe; }
+    .chip-green { background: #ecfdf5; color: #065f46; border-color: #bbf7d0; }
+    .subpaths { display: grid; gap: 10px; }
+    .subpath { border: 1px dashed #e2e8f0; border-radius: 10px; padding: 8px 10px; background: #ffffff; }
+    .subhead { font-size: 11px; color: #475569; margin-bottom: 4px; }
+    .steps { counter-reset: step; list-style: none; margin: 6px 0 0; padding: 0; }
+    .steps li { position: relative; padding-left: 32px; margin: 10px 0; line-height: 1.35; color: #0f172a; }
+    .steps li::before { content: counter(step); counter-increment: step; position: absolute; left: 0; top: -1px; width: 20px; height: 20px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #ffffff; background: var(--badge-color, #3b82f6); box-shadow: 0 1px 2px rgba(15,23,42,0.12); }
+    .steps li::after { content: ""; position: absolute; left: 9.5px; top: 20px; bottom: -10px; width: 1px; background: var(--line-color, #bfdbfe); opacity: 0.9; }
+    .steps li:last-child::after { display: none; }
+    .steps-blue { --badge-color: #3b82f6; --line-color: #bfdbfe; }
+    .steps-green { --badge-color: #10b981; --line-color: #bbf7d0; }
+    .caption { margin-top: 6px; color: #64748b; font-size: 11.5px; }
+    footer { margin-top: 20px; color: #94a3b8; font-size: 12px; }
+
+    @media (min-width: 900px) {
+      .subpaths { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* 夜间模式 */
+    @media (prefers-color-scheme: dark) {
+      body { color: #e5e7eb; background: #0b1220; }
+      h1 { color: #e5e7eb; }
+      .card { border-color: #1f2937; background: #0a1424; box-shadow: 0 1px 0 rgba(0,0,0,0.2); }
+      .lane { border-color: #243244; background: #0b1220; }
+      .lane-left { background: linear-gradient(180deg, #0f172a 0%, #0b1220 100%); }
+      .lane-right { background: linear-gradient(180deg, #052e2b 0%, #0b1220 100%); }
+      .lane-header h2 { color: #e5e7eb; }
+      p.desc, .caption { color: #94a3b8; }
+      .subpath { border-color: #334155; background: #0a1424; }
+      .steps li { color: #e5e7eb; }
+      .steps-blue { --line-color: #1d4ed8; }
+      .steps-green { --line-color: #10b981; }
+      .chip-blue { background: #0b1e4b; color: #93c5fd; border-color: #1d4ed8; }
+      .chip-green { background: #052e2b; color: #86efac; border-color: #10b981; }
+      footer { color: #64748b; }
+      .btn-toggle { border-color: #334155; background: #0a1424; color: #e5e7eb; }
+      .btn-toggle:hover { background: #0f172a; border-color: #475569; }
+    }
+
+    /* 手动切换：强制浅色 */
+    [data-theme="light"] { color-scheme: light; }
+    [data-theme="light"] body { color: #0f172a; background: #ffffff; }
+    [data-theme="light"] h1 { color: #0f172a; }
+    [data-theme="light"] .card { border-color: #e2e8f0; background: #ffffff; box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04); }
+    [data-theme="light"] .lane { border-color: #e2e8f0; background: #ffffff; }
+    [data-theme="light"] .lane-left { background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%); }
+    [data-theme="light"] .lane-right { background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%); }
+    [data-theme="light"] .lane-header h2 { color: #0f172a; }
+    [data-theme="light"] p.desc, [data-theme="light"] .caption { color: #64748b; }
+    [data-theme="light"] .subpath { border-color: #e2e8f0; background: #ffffff; }
+    [data-theme="light"] .steps li { color: #0f172a; }
+    [data-theme="light"] .steps-blue { --line-color: #bfdbfe; }
+    [data-theme="light"] .steps-green { --line-color: #bbf7d0; }
+    [data-theme="light"] .chip-blue { background: #eff6ff; color: #1e40af; border-color: #bfdbfe; }
+    [data-theme="light"] .chip-green { background: #ecfdf5; color: #065f46; border-color: #bbf7d0; }
+    [data-theme="light"] footer { color: #94a3b8; }
+    [data-theme="light"] .btn-toggle { border-color: #e2e8f0; background: #ffffff; color: #0f172a; }
+    [data-theme="light"] .btn-toggle:hover { background: #f8fafc; border-color: #cbd5e1; }
+
+    /* 手动切换：强制深色 */
+    [data-theme="dark"] { color-scheme: dark; }
+    [data-theme="dark"] body { color: #e5e7eb; background: #0b1220; }
+    [data-theme="dark"] h1 { color: #e5e7eb; }
+    [data-theme="dark"] .card { border-color: #1f2937; background: #0a1424; box-shadow: 0 1px 0 rgba(0,0,0,0.2); }
+    [data-theme="dark"] .lane { border-color: #243244; background: #0b1220; }
+    [data-theme="dark"] .lane-left { background: linear-gradient(180deg, #0f172a 0%, #0b1220 100%); }
+    [data-theme="dark"] .lane-right { background: linear-gradient(180deg, #052e2b 0%, #0b1220 100%); }
+    [data-theme="dark"] .lane-header h2 { color: #e5e7eb; }
+    [data-theme="dark"] p.desc, [data-theme="dark"] .caption { color: #94a3b8; }
+    [data-theme="dark"] .subpath { border-color: #334155; background: #0a1424; }
+    [data-theme="dark"] .steps li { color: #e5e7eb; }
+    [data-theme="dark"] .steps-blue { --line-color: #1d4ed8; }
+    [data-theme="dark"] .steps-green { --line-color: #10b981; }
+    [data-theme="dark"] .chip-blue { background: #0b1e4b; color: #93c5fd; border-color: #1d4ed8; }
+    [data-theme="dark"] .chip-green { background: #052e2b; color: #86efac; border-color: #10b981; }
+    [data-theme="dark"] footer { color: #64748b; }
+    [data-theme="dark"] .btn-toggle { border-color: #334155; background: #0a1424; color: #e5e7eb; }
+    [data-theme="dark"] .btn-toggle:hover { background: #0f172a; border-color: #475569; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <h1>传统开发方式 vs Flexmodel 生成接口</h1>
+    </div>
+    <p class="desc">以下为两种方式的流程与关键差异对比</p>
+    <div class="card layout" role="region" aria-label="传统开发方式与 Flexmodel 生成接口对比流程">
+      <div class="grid">
+        <section class="lane lane-left">
+          <div class="lane-header">
+            <h2>传统开发方式</h2>
+            <span class="chip chip-blue">5 步</span>
+          </div>
+          <ol class="steps steps-blue">
+            <li>建表</li>
+            <li>写 Dao 层</li>
+            <li>写 Service 层</li>
+            <li>写 Controller 层</li>
+            <li>接口调用</li>
+          </ol>
+          <p class="caption">需要手写 SQL、手动维护文档与接口，同步成本高，开发周期长</p>
+        </section>
+
+        <section class="lane lane-right">
+          <div class="lane-header">
+            <h2>Flexmodel 生成接口</h2>
+          </div>
+          <div class="subpaths">
+            <div class="subpath">
+              <div class="subhead"><span class="chip chip-green">3 步 · 模型驱动</span></div>
+              <ol class="steps steps-green">
+                <li>在线建模</li>
+                <li>配置身份源</li>
+                <li>调用接口</li>
+              </ol>
+            </div>
+            <div class="subpath">
+              <div class="subhead"><span class="chip chip-green">3 步 · 数据驱动</span></div>
+              <ol class="steps steps-green">
+                <li>连接数据源</li>
+                <li>可视化设计 API</li>
+                <li>调用接口</li>
+              </ol>
+            </div>
+          </div>
+          <p class="caption">基于 GraphQL 设计与自动生成，接口与文档同步，跨数据源查询更便捷</p>
+        </section>
+      </div>
+    </div>
+    <footer class="footer-actions" style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:32px;">
+      <span>独立 HTML 文件，适合嵌入演示或单页分享。</span>
+      <button id="theme-toggle" class="btn-toggle" type="button" onclick="toggleTheme()" aria-label="切换主题">🌙 暗色</button>
+    </footer>
+  </div>
+  <script>
+    (function() {
+      var root = document.documentElement;
+      var storageKey = 'theme-preference';
+      function applyTheme(theme) {
+        if (theme === 'light' || theme === 'dark') {
+          root.setAttribute('data-theme', theme);
+        } else {
+          root.removeAttribute('data-theme');
+        }
+        var btn = document.getElementById('theme-toggle');
+        if (btn) {
+          var next = (theme === 'dark') ? 'light' : 'dark';
+          btn.textContent = (next === 'dark') ? '🌙 暗色' : '☀️ 亮色';
+          btn.setAttribute('aria-label', (next === 'dark') ? '切换到暗色' : '切换到亮色');
+        }
+      }
+      var saved = localStorage.getItem(storageKey);
+      applyTheme(saved);
+      window.toggleTheme = function() {
+        var current = root.getAttribute('data-theme');
+        var next = current === 'dark' ? 'light' : 'dark';
+        localStorage.setItem(storageKey, next);
+        applyTheme(next);
+      };
+    })();
+  </script>
+</body>
+</html>
+
+
