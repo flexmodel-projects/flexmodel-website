@@ -34,13 +34,17 @@ Authorization: Bearer <your-jwt-token>
 
 ### 响应格式
 
-所有 API 响应都使用 JSON 格式，包含以下字段：
+所有 API 响应都使用 JSON 格式，当响应成功时返回格式就是数据本身，当响应失败时返回格式如下：
 
 ```json
 {
-  "code": 200,
-  "message": "success",
-  "data": {}
+  "code": -1,
+  "message": "error",
+  "errors": [
+    {
+      "foo": "bar"
+    }
+  ]
 }
 ```
 
