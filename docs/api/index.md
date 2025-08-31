@@ -59,5 +59,3 @@ Authorization: Bearer <your-jwt-token>
 
 - [模型 Schema](./model-schema.md) - 数据模型定义规范
 - [查询条件](./condition.md) - 查询条件语法说明
-- [REST API](./rest-api.md) - REST API 详细文档
-- [GraphQL API](./graphql-api.md) - GraphQL API 文档
