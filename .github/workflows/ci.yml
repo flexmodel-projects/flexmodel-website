@@ -32,6 +32,7 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           source: build/*
           strip_components: 1
           target: /opt/1panel/apps/openresty/openresty/www/sites/flexmodel.wetech.tech/index
