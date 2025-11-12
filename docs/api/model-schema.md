@@ -1,6 +1,7 @@
 ---
 sidebar_position: 21
 ---
+
 # Model Schema
 
 ## 简介
@@ -121,7 +122,6 @@ Flexmodel框架支持JSON格式和独有的IDL（Flexmodel接口定义语言）�
 | 属性             | 类型     | 可选属性 | 描述                                                                     |
 |----------------|--------|------|------------------------------------------------------------------------|
 | generatedValue | String | 是    | 生成当前日期，可配置`NOW_ON_CREATE`\|`NOW_ON_UPDATE`\|`NOW_ON_CREATE_AND_UPDATE` |
-
 
 **JSON**
 
@@ -396,8 +396,6 @@ StudentDetail:
 
 </details>
 
-
-
 ## IDL 对象配置
 
 Flexmodel IDL（Flexmodel接口定义语言）是一种简洁的模型定义语言，提供了比JSON更直观的语法来定义数据模型。
@@ -427,20 +425,20 @@ model ModelName {
 
 支持以下字段类型：
 
-| 类型 | 描述 | 示例 |
-|------|------|------|
-| `String` | 字符串类型 | `name: String @length(255)` |
-| `Int` | 整数类型 | `age: Int` |
-| `Long` | 长整数类型 | `id: Long` |
-| `Float` | 浮点数类型 | `price: Float` |
-| `Boolean` | 布尔类型 | `active: Boolean` |
-| `DateTime` | 日期时间类型 | `createdAt: DateTime` |
-| `Date` | 日期类型 | `birthday: Date` |
-| `Time` | 时间类型 | `startTime: Time` |
-| `JSON` | JSON类型 | `config: JSON` |
-| `EnumType` | 枚举类型 | `gender: UserGender` |
-| `ModelType` | 关联类型 | `student: Student` |
-| `ModelType[]` | 关联数组类型 | `students: Student[]` |
+| 类型            | 描述     | 示例                          |
+|---------------|--------|-----------------------------|
+| `String`      | 字符串类型  | `name: String @length(255)` |
+| `Int`         | 整数类型   | `age: Int`                  |
+| `Long`        | 长整数类型  | `id: Long`                  |
+| `Float`       | 浮点数类型  | `price: Float`              |
+| `Boolean`     | 布尔类型   | `active: Boolean`           |
+| `DateTime`    | 日期时间类型 | `createdAt: DateTime`       |
+| `Date`        | 日期类型   | `birthday: Date`            |
+| `Time`        | 时间类型   | `startTime: Time`           |
+| `JSON`        | JSON类型 | `config: JSON`              |
+| `EnumType`    | 枚举类型   | `gender: UserGender`        |
+| `ModelType`   | 关联类型   | `student: Student`          |
+| `ModelType[]` | 关联数组类型 | `students: Student[]`       |
 
 #### 字段修饰符
 
@@ -449,14 +447,14 @@ model ModelName {
 
 #### 常用注解
 
-| 注解 | 描述 | 示例 |
-|------|------|------|
-| `@id` | 主键标识 | `id: String @id` |
-| `@unique` | 唯一约束 | `email: String @unique` |
-| `@default(value)` | 默认值 | `status: String @default("active")` |
-| `@length(n)` | 字符串长度 | `name: String @length(255)` |
-| `@comment(text)` | 字段注释 | `name: String @comment("用户姓名")` |
-| `@relation(...)` | 关联关系 | `student: Student @relation(...)` |
+| 注解                | 描述    | 示例                                  |
+|-------------------|-------|-------------------------------------|
+| `@id`             | 主键标识  | `id: String @id`                    |
+| `@unique`         | 唯一约束  | `email: String @unique`             |
+| `@default(value)` | 默认值   | `status: String @default("active")` |
+| `@length(n)`      | 字符串长度 | `name: String @length(255)`         |
+| `@comment(text)`  | 字段注释  | `name: String @comment("用户姓名")`     |
+| `@relation(...)`  | 关联关系  | `student: Student @relation(...)`   |
 
 #### 主键注解
 
@@ -670,21 +668,21 @@ createdAt: DateTime @default(now())
 
 定义关联关系，支持以下参数：
 
-| 参数 | 类型 | 描述 | 示例 |
-|------|------|------|------|
-| `localField` | String | 本地字段名 | `localField: "id"` |
-| `foreignField` | String | 外键字段名 | `foreignField: "studentId"` |
-| `cascadeDelete` | Boolean | 是否级联删除 | `cascadeDelete: true` |
+| 参数              | 类型      | 描述     | 示例                          |
+|-----------------|---------|--------|-----------------------------|
+| `localField`    | String  | 本地字段名  | `localField: "id"`          |
+| `foreignField`  | String  | 外键字段名  | `foreignField: "studentId"` |
+| `cascadeDelete` | Boolean | 是否级联删除 | `cascadeDelete: true`       |
 
 #### @index 注解
 
 定义索引，支持以下参数：
 
-| 参数 | 类型 | 描述 | 示例 |
-|------|------|------|------|
-| `name` | String | 索引名称 | `name: "IDX_studentName"` |
-| `unique` | Boolean | 是否唯一 | `unique: false` |
-| `fields` | Array | 索引字段列表 | `fields: [studentName, age: (sort: "desc")]` |
+| 参数       | 类型      | 描述     | 示例                                           |
+|----------|---------|--------|----------------------------------------------|
+| `name`   | String  | 索引名称   | `name: "IDX_studentName"`                    |
+| `unique` | Boolean | 是否唯一   | `unique: false`                              |
+| `fields` | Array   | 索引字段列表 | `fields: [studentName, age: (sort: "desc")]` |
 
 ### 语法规则
 
@@ -696,13 +694,13 @@ createdAt: DateTime @default(now())
 
 ### 与JSON格式的对比
 
-| 特性 | IDL | JSON |
-|------|-----|------|
-| 语法简洁性 | ✅ 更简洁 | ❌ 冗长 |
-| 可读性 | ✅ 更直观 | ❌ 结构复杂 |
-| 注释支持 | ✅ 原生支持 | ❌ 不支持 |
-| 类型安全 | ✅ 强类型 | ❌ 弱类型 |
-| 工具支持 | ✅ 语法高亮 | ✅ 广泛支持 |
+| 特性    | IDL    | JSON   |
+|-------|--------|--------|
+| 语法简洁性 | ✅ 更简洁  | ❌ 冗长   |
+| 可读性   | ✅ 更直观  | ❌ 结构复杂 |
+| 注释支持  | ✅ 原生支持 | ❌ 不支持  |
+| 类型安全  | ✅ 强类型  | ❌ 弱类型  |
+| 工具支持  | ✅ 语法高亮 | ✅ 广泛支持 |
 
 ### 最佳实践
 
